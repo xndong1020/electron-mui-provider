@@ -1,21 +1,67 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu, ipcMain } from "electron";
 import * as path from "path";
 import * as url from "url";
+import * as dotenv from "dotenv";
 
-let mainWindow: Electron.BrowserWindow | null;
+dotenv.config({ path: `.env.${process.env.CURRENT_STAGE}` });
 
-function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 1100,
-    height: 700,
-    backgroundColor: "#f2f2f2",
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      devTools: process.env.NODE_ENV !== "production",
-    },
-  });
+let mainWindow: BrowserWindow | null;
 
+const mainMenu: Menu = Menu.buildFromTemplate([
+  {
+    label: "Edit",
+    submenu: [
+      { role: "undo" },
+      { role: "redo" },
+      { role: "copy" },
+      { role: "paste" },
+    ],
+  },
+  {
+    label: "Home",
+    submenu: [
+      {
+        label: "Login",
+        click: () => mainWindow?.webContents.send("update-route", "/login"),
+      },
+    ],
+  },
+  {
+    label: "Provider",
+    submenu: [
+      {
+        label: "Create New Provider",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/providers/new"),
+      },
+      {
+        label: "Create New Provider Bulk",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/providers/bulk"),
+      },
+    ],
+  },
+  {
+    label: "User",
+    submenu: [
+      {
+        label: "Create New User",
+        click: () => mainWindow?.webContents.send("update-route", "/users/new"),
+      },
+      {
+        label: "Create New User Bulk",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/users/bulk"),
+      },
+    ],
+  },
+  {
+    label: "Utils",
+    submenu: [{ role: "toggleDevTools" }, { role: "togglefullscreen" }],
+  },
+]);
+
+function loadUrl(mainWindow: BrowserWindow) {
   if (process.env.NODE_ENV === "development") {
     mainWindow.loadURL("http://localhost:4000");
   } else {
@@ -27,6 +73,29 @@ function createWindow() {
       })
     );
   }
+}
+
+// create renderer process
+function createWindow() {
+  mainWindow = new BrowserWindow({
+    width: 1100,
+    height: 800,
+    backgroundColor: "#f2f2f2",
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      devTools: process.env.NODE_ENV !== "production",
+    },
+  });
+
+  loadUrl(mainWindow);
+
+  // for debugging
+  if (process.env.NODE_ENV !== "production") {
+    mainWindow.webContents.openDevTools();
+  }
+
+  Menu.setApplicationMenu(mainMenu);
 
   mainWindow.on("closed", () => {
     mainWindow = null;
