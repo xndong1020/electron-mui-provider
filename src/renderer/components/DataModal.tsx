@@ -4,13 +4,14 @@ import { IProvider } from "../interfaces";
 import ProviderDataTable from "./ProviderDataTable";
 
 interface DataModalProps {
+  title?: string;
   open: boolean;
   data: IProvider[];
   handleClose: () => void;
 }
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -21,7 +22,7 @@ const style = {
   p: 4,
 };
 
-const DataModal = ({ open, data, handleClose }: DataModalProps) => {
+const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
   return (
     <>
       <Modal
@@ -32,7 +33,7 @@ const DataModal = ({ open, data, handleClose }: DataModalProps) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            {title}
           </Typography>
           <ProviderDataTable rows={data} />
           <Grid container justifyContent="center">

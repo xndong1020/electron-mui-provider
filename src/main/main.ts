@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import * as url from "url";
 import * as dotenv from "dotenv";
@@ -21,8 +21,18 @@ const mainMenu: Menu = Menu.buildFromTemplate([
     label: "Home",
     submenu: [
       {
+        label: "Home",
+        click: () => mainWindow?.webContents.send("update-route", "/"),
+      },
+    ],
+  },
+  {
+    label: "Auth",
+    submenu: [
+      {
         label: "Login",
-        click: () => mainWindow?.webContents.send("update-route", "/login"),
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/auth/login"),
       },
     ],
   },
@@ -105,7 +115,10 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", () => {
+  createWindow();
+  mainWindow?.webContents.send("update-route", "/");
+});
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {

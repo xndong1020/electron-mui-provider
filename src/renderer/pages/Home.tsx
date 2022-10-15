@@ -1,59 +1,59 @@
-import {
-  Container,
-  Grid,
-  Box,
-  Typography,
-  Button,
-  Card,
-  rgbToHex,
-} from "@mui/material";
+import { Box, Grid, Paper, styled } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import MediaCard from "../components/MediaCard";
+import { PublicRouteLayout } from "../layouts/PublicRouteLayout";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(2),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 const Home = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
+    <PublicRouteLayout title="Home">
       <Box
         sx={{
-          width: 300,
-          textAlign: "center",
+          padding: "20px 10px",
+          flexGrow: 1,
         }}
       >
-        <Button variant="text">
-          <Link to="/">Home</Link>
-        </Button>
+        <Grid container spacing={2}>
+          <Grid xs={6}>
+            <Item>
+              <MediaCard
+                description="Dashboard"
+                linkTo="/"
+                imgUrl="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+                sx={{ flex: "50%" }}
+              />
+            </Item>
+          </Grid>
+          <Grid xs={6}>
+            <Item>
+              <MediaCard
+                description="Providers Bulk"
+                linkTo="/providers/bulk"
+                imgUrl="https://mui.com/static/images/cards/paella.jpg"
+                sx={{ flex: "50%" }}
+              />
+            </Item>
+          </Grid>
+          <Grid xs={6}>
+            <Item>
+              <MediaCard
+                description="Users Bulk"
+                linkTo="/providers/bulk"
+                imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
+                sx={{ flex: "50%" }}
+              />{" "}
+            </Item>
+          </Grid>
+        </Grid>
       </Box>
-      <Box
-        sx={{
-          width: 300,
-          height: 80,
-          color: "white",
-          backgroundColor: rgbToHex("rgb(38, 59, 56)"),
-        }}
-      >
-        <Button variant="text">
-          <Link to="/providers/bulk">Providers</Link>
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          width: 300,
-          textAlign: "center",
-        }}
-      >
-        <Button variant="text">
-          <Link to="/users/bulk">Users</Link>
-        </Button>
-      </Box>
-    </Box>
+    </PublicRouteLayout>
   );
 };
 

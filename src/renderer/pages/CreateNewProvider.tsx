@@ -2,12 +2,15 @@ import React, { useState, ChangeEvent } from "react";
 import Papa from "papaparse";
 import DataModal from "../components/DataModal";
 import { Box, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IProvider } from "../interfaces";
+import { PublicRouteLayout } from "../layouts/PublicRouteLayout";
 
 const CreateNewProvider = () => {
   const [providers, setProviders] = useState<IProvider[]>([]);
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -15,7 +18,8 @@ const CreateNewProvider = () => {
       Papa.parse(files[0], {
         complete: function (results) {
           try {
-            const [_, ...rest] = results.data as string[][];
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const [firstRow, ...rest] = results.data as string[][];
 
             const parsedProviders: IProvider[] = rest
               .filter((row) => row.length === 12)
@@ -39,8 +43,9 @@ const CreateNewProvider = () => {
             if (parsedProviders.length) {
               setOpen(true);
             }
-          } catch {
-            console.error;
+            e.target.value = ""; // reset file input
+          } catch (e) {
+            console.error(e);
           }
         },
       });
@@ -51,17 +56,32 @@ const CreateNewProvider = () => {
     setOpen(false);
   };
 
+  const handleBack = () => {
+    navigate("/");
+  };
+
   return (
-    <>
-      <Box>CreateNewProvider</Box>
-      <input type="file" accept=".csv,.xlsx,.xls" onChange={handleFileUpload} />
-      <DataModal open={open} handleClose={handleClose} data={providers} />
-      <Box>
-        <Button variant="text">
-          <Link to="/">Back</Link>
-        </Button>
-      </Box>
-    </>
+    <PublicRouteLayout title="Create Providers Bulk">
+      <>
+        <Box>CreateNewProvider</Box>
+        <input
+          type="file"
+          accept=".csv,.xlsx,.xls"
+          onChange={handleFileUpload}
+        />
+        <DataModal
+          title="Bulk Create Providers"
+          open={open}
+          handleClose={handleClose}
+          data={providers}
+        />
+        <Box>
+          <Button variant="text" onClick={handleBack}>
+            Back
+          </Button>
+        </Box>
+      </>
+    </PublicRouteLayout>
   );
 };
 
