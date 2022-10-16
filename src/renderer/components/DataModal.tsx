@@ -1,12 +1,13 @@
 import { Modal, Box, Typography, Button, Grid } from "@mui/material";
 import React from "react";
-import { IProvider } from "../interfaces";
+import { IProvider, IUser } from "../interfaces";
 import ProviderDataTable from "./ProviderDataTable";
+import UserDataTable from "./UserDataTable";
 
 interface DataModalProps {
   title?: string;
   open: boolean;
-  data: IProvider[];
+  data: IProvider[] | IUser[];
   handleClose: () => void;
 }
 
@@ -22,7 +23,23 @@ const style = {
   p: 4,
 };
 
+const IsProvidersList = (data: IProvider[] | IUser[]): data is IProvider[] => {
+  return data.length > 0 && "tradingName" in data[0];
+};
+
+const IsUsersList = (data: IProvider[] | IUser[]): data is IUser[] => {
+  return data.length > 0 && "role" in data[0];
+};
+
 const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
+  const handleSubmitProviders = (data: IProvider[]): void => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  };
+  const handleSubmitUsers = (data: IUser[]): void => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  };
   return (
     <>
       <Modal
@@ -35,10 +52,32 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             {title}
           </Typography>
-          <ProviderDataTable rows={data} />
+          {IsProvidersList(data) && (
+            <ProviderDataTable rows={data as IProvider[]} />
+          )}
+          {IsUsersList(data) && <UserDataTable rows={data as IUser[]} />}
           <Grid container justifyContent="center">
             <Button onClick={handleClose}>Cancel</Button>
-            <Button>Submit</Button>
+
+            {IsProvidersList(data) && (
+              <Button
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                onClick={(e) => {
+                  handleSubmitProviders(data);
+                }}
+              >
+                Submit
+              </Button>
+            )}
+            {IsUsersList(data) && (
+              <Button // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                onClick={(e) => {
+                  handleSubmitUsers(data);
+                }}
+              >
+                Submit
+              </Button>
+            )}
           </Grid>
         </Box>
       </Modal>

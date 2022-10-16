@@ -37,3 +37,10 @@ export interface LoginResponse {
   role: string;
   username: string;
 }
+
+export interface IUser {
+  email: string;
+  name: string;
+  defaultProvider: string;
+  role: string;
+}

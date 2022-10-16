@@ -63,7 +63,7 @@ const CreateNewProvider = () => {
   return (
     <PublicRouteLayout title="Create Providers Bulk">
       <>
-        <Box>CreateNewProvider</Box>
+        <Box>Bulk Create New Providers</Box>
         <input
           type="file"
           accept=".csv,.xlsx,.xls"

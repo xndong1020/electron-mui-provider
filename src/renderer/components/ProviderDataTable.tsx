@@ -10,11 +10,11 @@ import {
 import React from "react";
 import { IProvider } from "../interfaces";
 
-export interface IDataTableprops {
+export interface IProviderDataTableProps {
   rows: IProvider[];
 }
 
-export default function ProviderDataTable({ rows }: IDataTableprops) {
+export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

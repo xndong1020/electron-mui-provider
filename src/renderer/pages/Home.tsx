@@ -45,7 +45,7 @@ const Home = () => {
             <Item>
               <MediaCard
                 description="Users Bulk"
-                linkTo="/providers/bulk"
+                linkTo="/users/bulk"
                 imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
                 sx={{ flex: "50%" }}
               />{" "}
