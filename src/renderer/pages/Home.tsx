@@ -21,7 +21,7 @@ const Home = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid xs={6}>
+          {/* <Grid item xs={6}>
             <Item>
               <MediaCard
                 description="Dashboard"
@@ -30,22 +30,42 @@ const Home = () => {
                 sx={{ flex: "50%" }}
               />
             </Item>
-          </Grid>
-          <Grid xs={6}>
+          </Grid> */}
+          <Grid item xs={6}>
             <Item>
               <MediaCard
-                description="Providers Bulk"
+                description="Create Providers"
                 linkTo="/providers/bulk"
                 imgUrl="https://mui.com/static/images/cards/paella.jpg"
                 sx={{ flex: "50%" }}
               />
             </Item>
           </Grid>
-          <Grid xs={6}>
+          <Grid item xs={6}>
             <Item>
               <MediaCard
-                description="Users Bulk"
+                description="Create Users"
                 linkTo="/users/bulk"
+                imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
+                sx={{ flex: "50%" }}
+              />{" "}
+            </Item>
+          </Grid>
+          <Grid item xs={6}>
+            <Item>
+              <MediaCard
+                description="Delete Provider"
+                linkTo="/providers/delete"
+                imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
+                sx={{ flex: "50%" }}
+              />{" "}
+            </Item>
+          </Grid>
+          <Grid item xs={6}>
+            <Item>
+              <MediaCard
+                description="Delete User"
+                linkTo="/users/delete"
                 imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
                 sx={{ flex: "50%" }}
               />{" "}

@@ -3,11 +3,13 @@ import Papa from "papaparse";
 import DataModal from "../components/DataModal";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { IUser } from "../interfaces";
+import { IUser, IUserViewData } from "../interfaces";
 import { PublicRouteLayout } from "../layouts/PublicRouteLayout";
+import * as saveSchema from "../schemas/user.save.json";
+import { validateJsonData } from "../_utils/validateJsonData";
 
 const CreateNewUser = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUserViewData[]>([]);
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -29,7 +31,19 @@ const CreateNewUser = () => {
                 defaultProvider: cols[2],
                 role: cols[3],
               }));
-            setUsers(parsedUsers);
+
+            const userViewData: IUserViewData[] = [...parsedUsers];
+
+            for (const [index, user] of parsedUsers.entries()) {
+              const { errors } = validateJsonData(saveSchema, user);
+              if (errors) {
+                userViewData[index].errors = errors;
+              } else {
+                userViewData[index].errors = [];
+              }
+            }
+
+            setUsers(userViewData);
             if (parsedUsers.length) {
               setOpen(true);
             }

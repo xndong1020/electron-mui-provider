@@ -1,0 +1,27 @@
+{
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "email": {
+      "maxLength": 250,
+      "format": "email",
+      "isNotEmpty": true,
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 1000,
+      "isNotEmpty": true,
+      "type": "string"
+    },
+    "defaultProvider": {
+      "maxLength": 250,
+      "type": "string"
+    },
+    "role": {
+      "enum": ["Admin", "DeseEditor", "ProviderEditor"],
+      "type": "string"
+    }
+  },
+  "required": ["email", "name", "defaultProvider", "role"],
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

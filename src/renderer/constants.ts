@@ -3,3 +3,9 @@ export const UserRoleTypes = Object.freeze({
   Provider_Editor: "ProviderEditor",
   DESE_Editor: "DeseEditor",
 });
+
+export enum ErrorType {
+  Enum = "enum",
+  Required = "required",
+  AdditionalProperties = "additionalProperties",
+}

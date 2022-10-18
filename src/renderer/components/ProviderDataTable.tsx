@@ -8,10 +8,12 @@ import {
   TableRow,
 } from "@mui/material";
 import React from "react";
-import { IProvider } from "../interfaces";
+import Tooltip from "@mui/material/Tooltip";
+import ErrorIcon from "@mui/icons-material/Error";
+import { IProviderViewData } from "../interfaces";
 
 export interface IProviderDataTableProps {
-  rows: IProvider[];
+  rows: IProviderViewData[];
 }
 
 export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
@@ -20,6 +22,7 @@ export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            <TableCell>error?</TableCell>
             <TableCell>id</TableCell>
             <TableCell>legalName</TableCell>
             <TableCell>tradingName</TableCell>
@@ -41,8 +44,16 @@ export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.id}
+                {!!row.errors?.length && (
+                  <Tooltip
+                    title={JSON.stringify(row.errors, null, 2)}
+                    placement="right-start"
+                  >
+                    <ErrorIcon sx={{ color: "red" }} />
+                  </Tooltip>
+                )}
               </TableCell>
+              <TableCell>{row.id}</TableCell>
               <TableCell>{row.legalName}</TableCell>
               <TableCell>{row.tradingName}</TableCell>
               <TableCell>{row.orgId}</TableCell>

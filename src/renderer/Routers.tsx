@@ -4,6 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { GlobalContext } from "./contexts/GlobalContext";
 import CreateNewProvider from "./pages/CreateNewProvider";
 import CreateNewUser from "./pages/CreateNewUser";
+import DeleteCourse from "./pages/DeleteCourse";
+import DeleteProvider from "./pages/DeleteProvider";
+import DeleteUser from "./pages/DeleteUser";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import theme from "./theme";
@@ -31,12 +34,15 @@ const Routers = () => {
           <Route path="login" element={<Login />} />
         </Route>
         <Route path="providers">
-          <Route path="new" element={<CreateNewProvider />} />
           <Route path="bulk" element={<CreateNewProvider />} />
+          <Route path="delete" element={<DeleteProvider />} />
         </Route>
         <Route path="users">
-          <Route path="new" element={<CreateNewUser />} />
           <Route path="bulk" element={<CreateNewUser />} />
+          <Route path="delete" element={<DeleteUser />} />
+        </Route>
+        <Route path="courses">
+          <Route path="delete" element={<DeleteCourse />} />
         </Route>
       </Routes>
     </>

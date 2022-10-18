@@ -3,11 +3,13 @@ import Papa from "papaparse";
 import DataModal from "../components/DataModal";
 import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { IProvider } from "../interfaces";
+import { IProvider, IProviderViewData } from "../interfaces";
 import { PublicRouteLayout } from "../layouts/PublicRouteLayout";
+import * as saveSchema from "../schemas/provider.save.json";
+import { validateJsonData } from "../_utils/validateJsonData";
 
 const CreateNewProvider = () => {
-  const [providers, setProviders] = useState<IProvider[]>([]);
+  const [providers, setProviders] = useState<IProviderViewData[]>([]);
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -39,8 +41,22 @@ const CreateNewProvider = () => {
                   postCode: cols[11],
                 },
               }));
-            setProviders(parsedProviders);
-            if (parsedProviders.length) {
+
+            const providersForDataTable: IProviderViewData[] = [
+              ...parsedProviders,
+            ];
+
+            for (const [index, provider] of parsedProviders.entries()) {
+              const { errors } = validateJsonData(saveSchema, provider);
+              if (errors) {
+                providersForDataTable[index].errors = errors;
+              } else {
+                providersForDataTable[index].errors = [];
+              }
+            }
+
+            setProviders(providersForDataTable);
+            if (providersForDataTable.length) {
               setOpen(true);
             }
             e.target.value = ""; // reset file input

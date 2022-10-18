@@ -37,31 +37,42 @@ const mainMenu: Menu = Menu.buildFromTemplate([
     ],
   },
   {
-    label: "Provider",
+    label: "Provider Management",
     submenu: [
-      {
-        label: "Create New Provider",
-        click: () =>
-          mainWindow?.webContents.send("update-route", "/providers/new"),
-      },
       {
         label: "Create New Provider Bulk",
         click: () =>
           mainWindow?.webContents.send("update-route", "/providers/bulk"),
       },
+      {
+        label: "Delete Provider",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/providers/delete"),
+      },
     ],
   },
   {
-    label: "User",
+    label: "User Management",
     submenu: [
-      {
-        label: "Create New User",
-        click: () => mainWindow?.webContents.send("update-route", "/users/new"),
-      },
       {
         label: "Create New User Bulk",
         click: () =>
           mainWindow?.webContents.send("update-route", "/users/bulk"),
+      },
+      {
+        label: "Delete User",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/users/delete"),
+      },
+    ],
+  },
+  {
+    label: "Course Management",
+    submenu: [
+      {
+        label: "Delete User",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/courses/delete"),
       },
     ],
   },

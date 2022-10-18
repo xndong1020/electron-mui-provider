@@ -10,6 +10,10 @@ export interface IProvider {
   address: Address;
 }
 
+export interface IProviderViewData extends IProvider {
+  errors?: string[];
+}
+
 export interface Address {
   addressLine1: string;
   suburb: string;
@@ -17,12 +21,15 @@ export interface Address {
   postCode: string;
 }
 
-export interface User {
-  id?: string;
+export interface IUser {
   email: string;
   name: string;
   defaultProvider: string;
   role: string;
+}
+
+export interface IUserViewData extends IUser {
+  errors?: string[];
 }
 
 export interface LoginRequest {

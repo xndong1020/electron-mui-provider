@@ -1,0 +1,256 @@
+{
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "id": {
+      "maxLength": 50,
+      "isNotEmpty": true,
+      "type": "string"
+    },
+    "legalName": {
+      "maxLength": 1000,
+      "isNotEmpty": true,
+      "type": "string"
+    },
+    "tradingName": {
+      "maxLength": 250,
+      "isNotEmpty": true,
+      "type": "string"
+    },
+    "orgId": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "maximum": 99999,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "extId": {
+      "anyOf": [
+        {
+          "maxLength": 50,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "phoneNumber": {
+      "anyOf": [
+        {
+          "maxLength": 16,
+          "minLength": 6,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "email": {
+      "anyOf": [
+        {
+          "format": "email",
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "website": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "address": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ILocation"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "providerAbout": {
+      "anyOf": [
+        {
+          "customValidator": ["1"],
+          "maxEditorLength": "5000",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "campuses": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ICampus"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "policies": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IPolicy"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "logo": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "logoX": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "allowEditProfile": {
+      "description": "Toggles permissions for Provider Editors to edit the Provider Profile",
+      "type": "boolean"
+    },
+    "allowApproveAndReject": {
+      "description": "Toggles permissions for Provider Editors to Approve & Reject Credentials",
+      "type": "boolean"
+    }
+  },
+  "required": ["legalName", "tradingName", "address"],
+  "definitions": {
+    "ILocation": {
+      "type": "object",
+      "properties": {
+        "addressLine1": {
+          "maxLength": 100,
+          "type": "string"
+        },
+        "addressLine2": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "suburb": {
+          "maxLength": 100,
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/definitions/State"
+        },
+        "postCode": {
+          "maxLength": 10,
+          "type": "string"
+        },
+        "latitude": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "longitude": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": ["addressLine1", "postCode", "state", "suburb"]
+    },
+    "State": {
+      "enum": ["ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA"],
+      "type": "string"
+    },
+    "ICampus": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": ["string", "null"]
+        },
+        "name": {
+          "maxLength": 100,
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/definitions/ILocation"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["location", "name"]
+    },
+    "IPolicy": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/PolicyType"
+        },
+        "desc": {
+          "maxLength": 5000,
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["desc", "type"]
+    },
+    "PolicyType": {
+      "enum": ["Admission Policy", "English Language Policy", "Privacy Policy"],
+      "type": "string"
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
