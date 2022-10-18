@@ -9,7 +9,7 @@
     "dev:electron": "webpack --config webpack/electron.webpack.ts --mode=development && npm run start:electron",
     "dev:react": "webpack serve --config webpack/react.webpack.ts --mode=development",
     "electron:serve": "wait-on http-get://localhost:4000/ && npm run dev:electron",
-    "start:electron": "cross-env CURRENT_STAGE=qa electron .",
+    "start:electron": "cross-env CURRENT_STAGE=development electron .",
     "build": "npm-run-all build:electron build:react",
     "build:run": "npm-run-all build start:electron",
     "build:electron": "webpack --config webpack/electron.webpack.ts --mode=production",
@@ -31,7 +31,8 @@
     "papaparse": "^5.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.2"
+    "react-router-dom": "^6.4.2",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "@types/node": "^18.8.3",
@@ -42,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
     "electron": "17.4.11",
     "electron-builder": "^23.6.0",
     "eslint": "^8.25.0",
@@ -50,6 +52,7 @@
     "html-webpack-plugin": "^5.5.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
+    "style-loader": "^3.3.1",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4",

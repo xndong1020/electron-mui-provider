@@ -1,14 +1,20 @@
 /* eslint-disable no-console */
 import { Modal, Box, Typography, Button, Grid } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import {
+  CreateProviderResponse,
+  CreateUserResponse,
   IProvider,
   IProviderViewData,
   IUser,
   IUserViewData,
 } from "../interfaces";
+import { toast } from "react-toastify";
+import { createProviderAsync } from "../services/providers.service";
+import { createUserAsync } from "../services/users.service";
 import ProviderDataTable from "./ProviderDataTable";
 import UserDataTable from "./UserDataTable";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 interface DataModalProps {
   title?: string;
@@ -42,11 +48,91 @@ const IsUsersList = (
 };
 
 const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
-  const handleSubmitProviders = (providers: IProvider[]): void => {
+  const { setLoadingStatus } = useContext(GlobalContext);
+
+  const notify = ({ message }: { message: string }) =>
+    toast.error(message, { position: toast.POSITION.TOP_RIGHT });
+
+  const handleSubmitProviders = (providers: IProviderViewData[]): void => {
     console.log("providers", providers);
+    const tasks = providers
+      .map((providerViewData) => ({
+        id: providerViewData.id,
+        legalName: providerViewData.legalName,
+        tradingName: providerViewData.tradingName,
+        orgId: providerViewData.orgId,
+        extId: providerViewData.extId,
+        phoneNumber: providerViewData.phoneNumber,
+        email: providerViewData.email,
+        website: providerViewData.website,
+        address: providerViewData.address,
+      }))
+      .map((provider) => createProviderAsync(provider));
+
+    setLoadingStatus(true);
+    Promise.allSettled(tasks)
+      .then(
+        (
+          results: PromiseSettledResult<{
+            error?: string;
+            response?: CreateProviderResponse;
+            payload: IProvider;
+          }>[]
+        ) => {
+          for (const result of results) {
+            if (result.status === "rejected") {
+              notify(result.reason);
+            }
+            if (result.status === "fulfilled") {
+              if (result.value.error)
+                notify({
+                  message: `Provider ${result.value.payload.id} creation failed. Error:${result.value.error}`,
+                });
+            }
+          }
+        }
+      )
+      .finally(() => {
+        setLoadingStatus(false);
+      });
   };
-  const handleSubmitUsers = (users: IUser[]): void => {
+  const handleSubmitUsers = async (users: IUserViewData[]): Promise<void> => {
     console.log("users", users);
+    const tasks = users
+      .map((userViewData) => ({
+        email: userViewData.email,
+        name: userViewData.name,
+        defaultProvider: userViewData.defaultProvider,
+        role: userViewData.role,
+      }))
+      .map((user) => createUserAsync(user));
+
+    setLoadingStatus(true);
+    Promise.allSettled(tasks)
+      .then(
+        (
+          results: PromiseSettledResult<{
+            error?: string;
+            response?: CreateUserResponse;
+            payload: IUser;
+          }>[]
+        ) => {
+          for (const result of results) {
+            if (result.status === "rejected") {
+              notify(result.reason);
+            }
+            if (result.status === "fulfilled") {
+              if (result.value.error)
+                notify({
+                  message: `User ${result.value.payload.email} creation failed. Error:${result.value.error}`,
+                });
+            }
+          }
+        }
+      )
+      .finally(() => {
+        setLoadingStatus(false);
+      });
   };
   return (
     <>

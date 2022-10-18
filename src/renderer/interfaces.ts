@@ -51,3 +51,11 @@ export interface IUser {
   defaultProvider: string;
   role: string;
 }
+
+export interface CreateUserResponse extends IUser {
+  id: string;
+}
+
+export interface CreateProviderResponse extends IProvider {
+  allowEditProfile: boolean;
+}
