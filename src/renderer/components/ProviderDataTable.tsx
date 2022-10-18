@@ -14,9 +14,13 @@ import { IProviderViewData } from "../interfaces";
 
 export interface IProviderDataTableProps {
   rows: IProviderViewData[];
+  errorIds: string[];
 }
 
-export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
+export default function ProviderDataTable({
+  rows,
+  errorIds,
+}: IProviderDataTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,7 +48,7 @@ export default function ProviderDataTable({ rows }: IProviderDataTableProps) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {!!row.errors?.length && (
+                {(!!row.errors?.length || errorIds.includes(row.id)) && (
                   <Tooltip
                     title={JSON.stringify(row.errors, null, 2)}
                     placement="right-start"

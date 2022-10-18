@@ -14,9 +14,13 @@ import { IUserViewData } from "../interfaces";
 
 export interface IUserDataTableProps {
   rows: IUserViewData[];
+  errorEmails: string[];
 }
 
-export default function ProviderDataTable({ rows }: IUserDataTableProps) {
+export default function ProviderDataTable({
+  rows,
+  errorEmails,
+}: IUserDataTableProps) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -36,7 +40,7 @@ export default function ProviderDataTable({ rows }: IUserDataTableProps) {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {!!row.errors?.length && (
+                {(!!row.errors?.length || errorEmails.includes(row.email)) && (
                   <Tooltip
                     title={JSON.stringify(row.errors, null, 2)}
                     placement="right-start"

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Modal, Box, Typography, Button, Grid } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   CreateProviderResponse,
   CreateUserResponse,
@@ -48,6 +48,8 @@ const IsUsersList = (
 };
 
 const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
+  const [errorIds, setErrorIds] = useState<string[]>([]);
+  const [errorEmails, setErrorEmails] = useState<string[]>([]);
   const { setLoadingStatus } = useContext(GlobalContext);
 
   const notify = ({ message }: { message: string }) =>
@@ -79,17 +81,21 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
             payload: IProvider;
           }>[]
         ) => {
+          const failedIds = [];
           for (const result of results) {
             if (result.status === "rejected") {
               notify(result.reason);
             }
             if (result.status === "fulfilled") {
-              if (result.value.error)
+              if (result.value.error) {
                 notify({
                   message: `Provider ${result.value.payload.id} creation failed. Error:${result.value.error}`,
                 });
+                failedIds.push(result.value.payload.id);
+              }
             }
           }
+          setErrorIds(failedIds);
         }
       )
       .finally(() => {
@@ -117,6 +123,7 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
             payload: IUser;
           }>[]
         ) => {
+          const failedEmails = [];
           for (const result of results) {
             if (result.status === "rejected") {
               notify(result.reason);
@@ -126,8 +133,10 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
                 notify({
                   message: `User ${result.value.payload.email} creation failed. Error:${result.value.error}`,
                 });
+              failedEmails.push(result.value.payload.email);
             }
           }
+          setErrorEmails(failedEmails);
         }
       )
       .finally(() => {
@@ -147,9 +156,11 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
             {title}
           </Typography>
           {IsProvidersList(data) && (
-            <ProviderDataTable rows={data as IProvider[]} />
+            <ProviderDataTable rows={data as IProvider[]} errorIds={errorIds} />
           )}
-          {IsUsersList(data) && <UserDataTable rows={data as IUser[]} />}
+          {IsUsersList(data) && (
+            <UserDataTable rows={data as IUser[]} errorEmails={errorEmails} />
+          )}
           <Grid container justifyContent="center">
             <Button onClick={handleClose}>Cancel</Button>
 
