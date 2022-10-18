@@ -27,7 +27,7 @@ export default function App(): JSX.Element {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="colored"
       />
       <CssBaseline />
       <Routers />
