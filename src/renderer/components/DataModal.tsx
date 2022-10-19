@@ -9,12 +9,12 @@ import {
   IUser,
   IUserViewData,
 } from "../interfaces";
-import { toast } from "react-toastify";
 import { createProviderAsync } from "../services/providers.service";
 import { createUserAsync } from "../services/users.service";
 import ProviderDataTable from "./ProviderDataTable";
 import UserDataTable from "./UserDataTable";
 import { GlobalContext } from "../contexts/GlobalContext";
+import { notifyError, notifyGood } from "../_utils/toastor";
 
 interface DataModalProps {
   title?: string;
@@ -52,9 +52,6 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
   const [errorEmails, setErrorEmails] = useState<string[]>([]);
   const { setLoadingStatus } = useContext(GlobalContext);
 
-  const notify = ({ message }: { message: string }) =>
-    toast.error(message, { position: toast.POSITION.TOP_RIGHT });
-
   const handleSubmitProviders = (providers: IProviderViewData[]): void => {
     console.log("providers", providers);
     const tasks = providers
@@ -84,14 +81,18 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
           const failedIds = [];
           for (const result of results) {
             if (result.status === "rejected") {
-              notify(result.reason);
+              notifyError(result.reason);
             }
             if (result.status === "fulfilled") {
               if (result.value.error) {
-                notify({
+                notifyError({
                   message: `Provider ${result.value.payload.id} creation failed. Error:${result.value.error}`,
                 });
                 failedIds.push(result.value.payload.id);
+              } else {
+                notifyGood({
+                  message: `Provider ${result.value.payload.id} has been created.`,
+                });
               }
             }
           }
@@ -126,14 +127,19 @@ const DataModal = ({ title, open, data, handleClose }: DataModalProps) => {
           const failedEmails = [];
           for (const result of results) {
             if (result.status === "rejected") {
-              notify(result.reason);
+              notifyError(result.reason);
             }
             if (result.status === "fulfilled") {
-              if (result.value.error)
-                notify({
+              if (result.value.error) {
+                notifyError({
                   message: `User ${result.value.payload.email} creation failed. Error:${result.value.error}`,
                 });
-              failedEmails.push(result.value.payload.email);
+                failedEmails.push(result.value.payload.email);
+              } else {
+                notifyGood({
+                  message: `User ${result.value.payload.email} has been created. id:${result.value.response?.id}`,
+                });
+              }
             }
           }
           setErrorEmails(failedEmails);

@@ -39,7 +39,7 @@ const Routers = () => {
         </Route>
         <Route path="users">
           <Route path="bulk" element={<CreateNewUser />} />
-          <Route path="delete" element={<DeleteUser />} />
+          <Route path="deactivate" element={<DeleteUser />} />
         </Route>
         <Route path="courses">
           <Route path="delete" element={<DeleteCourse />} />

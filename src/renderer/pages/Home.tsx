@@ -64,8 +64,8 @@ const Home = () => {
           <Grid item xs={6}>
             <Item>
               <MediaCard
-                description="Delete User"
-                linkTo="/users/delete"
+                description="Deactivate User"
+                linkTo="/users/deactivate"
                 imgUrl="https://mui.com/static/images/cards/live-from-space.jpg"
                 sx={{ flex: "50%" }}
               />{" "}

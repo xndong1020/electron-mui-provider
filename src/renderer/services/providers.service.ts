@@ -30,3 +30,30 @@ export const createProviderAsync = async (
     };
   }
 };
+
+export const deleteProviderAsync = async (
+  providerId: string
+): Promise<{
+  error?: string;
+  response?: CreateProviderResponse;
+  providerId: string;
+}> => {
+  try {
+    const deleteProviderResponse = await axios.delete<CreateProviderResponse>(
+      `/admin/provider/${providerId}`
+    );
+    console.log("deleteProviderResponse", deleteProviderResponse);
+    return { providerId };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      providerId,
+      error: (
+        (error as AxiosError).response?.data as {
+          code: string;
+          message: string;
+        }
+      )?.message,
+    };
+  }
+};

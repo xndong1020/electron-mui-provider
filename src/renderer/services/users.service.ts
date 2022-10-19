@@ -30,3 +30,29 @@ export const createUserAsync = async (
     };
   }
 };
+
+export const deactivateUserAsync = async (
+  username: string
+): Promise<{
+  error?: string;
+  response?: CreateUserResponse;
+}> => {
+  try {
+    const deactivateUserResponse = await axios.post<CreateUserResponse>(
+      `/admin/user/deactivate/${username}`,
+      {}
+    );
+    console.log("deactivateUserResponse", deactivateUserResponse);
+    return { response: deactivateUserResponse.data };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      error: (
+        (error as AxiosError).response?.data as {
+          code: string;
+          message: string;
+        }
+      )?.message,
+    };
+  }
+};

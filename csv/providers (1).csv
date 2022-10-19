@@ -1,0 +1,2 @@
+id,legalName,tradingName,orgId,extId,phoneNumber,email,website,address/addressLine1,address/suburb,address/state,address/postCode
+PPC9,Test legalName Auto One,Test tradingName Auto One,9999,PPC9,0400123456,test-qa@test.com,http://www.test-qa.com.au,1 QA Street,Townhall,NSW,2000
