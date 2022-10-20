@@ -2,11 +2,11 @@ export interface IProvider {
   id: string;
   legalName: string;
   tradingName: string;
-  orgId: number;
+  orgId?: number;
   extId: string;
-  phoneNumber: string;
-  email: string;
-  website: string;
+  phoneNumber?: string;
+  email?: string;
+  website?: string;
   address: Address;
 }
 

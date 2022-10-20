@@ -4,7 +4,6 @@
   "properties": {
     "email": {
       "maxLength": 250,
-      "format": "email",
       "isNotEmpty": true,
       "type": "string"
     },

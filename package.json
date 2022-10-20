@@ -9,7 +9,7 @@
     "dev:electron": "webpack --config webpack/electron.webpack.ts --mode=development && npm run start:electron",
     "dev:react": "webpack serve --config webpack/react.webpack.ts --mode=development",
     "electron:serve": "wait-on http-get://localhost:4000/ && npm run dev:electron",
-    "start:electron": "cross-env CURRENT_STAGE=development electron .",
+    "start:electron": "cross-env CURRENT_STAGE=prod electron .",
     "build": "npm-run-all build:electron build:react",
     "build:run": "npm-run-all build start:electron",
     "build:electron": "webpack --config webpack/electron.webpack.ts --mode=production",

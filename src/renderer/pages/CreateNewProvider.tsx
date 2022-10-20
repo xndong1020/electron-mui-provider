@@ -26,19 +26,19 @@ const CreateNewProvider = () => {
             const parsedProviders: IProvider[] = rest
               .filter((row) => row.length === 12)
               .map((cols) => ({
-                id: cols[0],
-                legalName: cols[1],
-                tradingName: cols[2],
-                orgId: Number(cols[3]),
-                extId: cols[4],
-                phoneNumber: cols[5],
-                email: cols[6],
-                website: cols[7],
+                id: cols[0]?.trim(),
+                legalName: cols[1]?.trim(),
+                tradingName: cols[2]?.trim(),
+                orgId: cols[3]?.trim() ? Number(cols[3].trim()) : undefined,
+                extId: cols[4]?.trim(),
+                phoneNumber: cols[5]?.trim() ? cols[5].trim() : undefined,
+                email: cols[6]?.trim() ? cols[6].trim() : undefined,
+                website: cols[7]?.trim() ? cols[7].trim() : undefined,
                 address: {
-                  addressLine1: cols[8],
-                  suburb: cols[9],
-                  state: cols[10],
-                  postCode: cols[11],
+                  addressLine1: cols[8]?.trim(),
+                  suburb: cols[9]?.trim(),
+                  state: cols[10]?.trim(),
+                  postCode: cols[11]?.trim(),
                 },
               }));
 

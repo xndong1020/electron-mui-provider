@@ -26,10 +26,10 @@ const CreateNewUser = () => {
             const parsedUsers: IUser[] = rest
               .filter((row) => row.length === 4)
               .map((cols) => ({
-                email: cols[0],
-                name: cols[1],
-                defaultProvider: cols[2],
-                role: cols[3],
+                email: cols[0]?.trim(),
+                name: cols[1]?.trim(),
+                defaultProvider: cols[2]?.trim(),
+                role: cols[3]?.trim(),
               }));
 
             const userViewData: IUserViewData[] = [...parsedUsers];
