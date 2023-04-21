@@ -37,6 +37,16 @@ const mainMenu: Menu = Menu.buildFromTemplate([
     ],
   },
   {
+    label: "Report",
+    submenu: [
+      {
+        label: "Price",
+        click: () =>
+          mainWindow?.webContents.send("update-route", "/report/price"),
+      },
+    ],
+  },
+  {
     label: "Provider Management",
     submenu: [
       {

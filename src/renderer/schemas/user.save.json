@@ -17,7 +17,7 @@
       "type": "string"
     },
     "role": {
-      "enum": ["Admin", "DeseEditor", "ProviderEditor"],
+      "enum": ["Admin", "DeseEditor", "ProviderEditor", "ProviderAdmin"],
       "type": "string"
     }
   },

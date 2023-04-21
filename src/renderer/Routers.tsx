@@ -6,6 +6,7 @@ import CreateNewProvider from "./pages/CreateNewProvider";
 import CreateNewUser from "./pages/CreateNewUser";
 import DeleteCourse from "./pages/DeleteCourse";
 import DeleteProvider from "./pages/DeleteProvider";
+import PriceReport from "./pages/PriceReport";
 import DeleteUser from "./pages/DeleteUser";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -43,6 +44,9 @@ const Routers = () => {
         </Route>
         <Route path="courses">
           <Route path="delete" element={<DeleteCourse />} />
+        </Route>
+        <Route path="report">
+          <Route path="price" element={<PriceReport />} />
         </Route>
       </Routes>
     </>

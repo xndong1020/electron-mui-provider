@@ -57,3 +57,28 @@ export const deleteProviderAsync = async (
     };
   }
 };
+
+export const listAllProviderAsync = async (): Promise<{
+  error?: string;
+  response?: string[];
+}> => {
+  try {
+    const listProviderResponse = await axios.get<{ items: IProvider[] }>(
+      `/admin/provider`
+    );
+    console.log("listProviderResponse", listProviderResponse.data.items);
+    const providers = listProviderResponse.data.items;
+    const providerIds = providers.map((provider) => provider.id);
+    return { response: providerIds };
+  } catch (error) {
+    console.log("error", error);
+    return {
+      error: (
+        (error as AxiosError).response?.data as {
+          code: string;
+          message: string;
+        }
+      )?.message,
+    };
+  }
+};
